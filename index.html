@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart CPU Process Scheduler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-title">CPU SCHEDULER</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#scheduler-section">CPU Scheduler</a>
+                <a href="#algorithms-section">Algorithms</a>
+
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="main-header">
+            <h1>SMART CPU PROCESS SCHEDULER</h1>
+            <p class="subtitle">CPU Scheduling Algorithm Simulation</p>
+        </div>
+
+
+        <section id="scheduler-section" class="card">
+            <div class="card-header">
+                <h2>1. Enter Process Details</h2>
+            </div>
+            <div class="card-body">
+                <div class="input-inline-group">
+                    <label for="num-processes"><strong>Number of Processes:</strong></label>
+                    <input type="number" id="num-processes" min="1" max="20" value="4">
+                    <button type="button" id="btn-add-processes" class="btn btn-primary">Add Processes</button>
+                    <button type="button" id="btn-load-example" class="btn btn-secondary">Load Example Data</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="process-input-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>Arrival Time (AT)</th>
+                                <th>Burst Time (BT)</th>
+                                <th>Priority (Lower = Higher)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="process-table-body">
+                            <!-- Dynamically generated rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="card">
+            <div class="card-header">
+                <h2>2. Select Scheduling Algorithm</h2>
+            </div>
+            <div class="card-body">
+                <div class="algo-buttons-container">
+                    <button type="button" class="btn-algo active" data-algo="fcfs">FCFS</button>
+                    <button type="button" class="btn-algo" data-algo="sjf">SJF Non-Preemptive</button>
+                    <button type="button" class="btn-algo" data-algo="srtf">SRTF</button>
+                    <button type="button" class="btn-algo" data-algo="rr">Round Robin</button>
+                    <button type="button" class="btn-algo" data-algo="priority-np">Priority Non-Preemptive</button>
+                    <button type="button" class="btn-algo" data-algo="priority-p">Priority Preemptive</button>
+                </div>
+
+
+                <div id="quantum-container" class="quantum-box" style="display: none;">
+                    <label for="time-quantum"><strong>Time Quantum:</strong></label>
+                    <input type="number" id="time-quantum" min="1" max="100" value="2">
+                </div>
+
+                <div class="action-buttons-center">
+                    <button type="button" id="btn-run" class="btn btn-success btn-large">Run Scheduler</button>
+                    <button type="button" id="btn-reset" class="btn btn-danger">Reset</button>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="results-section" class="card" style="display: none;">
+            <div class="card-header">
+                <h2>3. Scheduling Results</h2>
+            </div>
+            <div class="card-body">
+
+                <div class="gantt-section">
+                    <h3>GANTT CHART</h3>
+                    <div id="gantt-chart-wrapper" class="gantt-wrapper">
+                        <!-- Dynamic Gantt chart blocks and time numbers -->
+                    </div>
+                </div>
+
+
+                <div class="table-responsive">
+                    <table class="data-table results-table">
+                        <thead>
+                            <tr>
+                                <th>PID</th>
+                                <th>Arrival Time (AT)</th>
+                                <th>Burst Time (BT)</th>
+                                <th>Priority</th>
+                                <th>Completion Time (CT)</th>
+                                <th>Turnaround Time (TAT)</th>
+                                <th>Waiting Time (WT)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table-body">
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="metrics-summary">
+                    <div class="metric-item">
+                        <span class="metric-label">Average Waiting Time:</span>
+                        <span id="avg-wt-value" class="metric-value">0.00</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Average Turnaround Time:</span>
+                        <span id="avg-tat-value" class="metric-value">0.00</span>
+                    </div>
+                </div>
+
+
+                <div class="algo-info-card">
+                    <h4>Selected Algorithm: <span id="info-algo-name">FCFS</span></h4>
+                    <p><strong>Type:</strong> <span id="info-algo-type">Non-Preemptive</span></p>
+                    <p><strong>Description:</strong> <span id="info-algo-desc">Processes are executed in order of
+                            arrival.</span></p>
+                </div>
+
+            </div>
+        </section>
+
+
+        <section id="algorithms-section" class="card">
+            <div class="card-header">
+                <h2>Algorithm Descriptions & Formulas</h2>
+            </div>
+            <div class="card-body">
+                <div class="reference-grid">
+                    <div class="ref-item">
+                        <strong>FCFS (First Come First Serve):</strong>
+                        <p>Processes are executed in order of arrival.</p>
+                    </div>
+                    <div class="ref-item">
+                        <strong>SJF (Shortest Job First):</strong>
+                        <p>The process with the shortest burst time is selected first.</p>
+                    </div>
+                    <div class="ref-item">
+                        <strong>SRTF (Shortest Remaining Time First):</strong>
+                        <p>The process with the shortest remaining time is selected.</p>
+                    </div>
+                    <div class="ref-item">
+                        <strong>Round Robin (RR):</strong>
+                        <p>Each process gets CPU time according to the time quantum.</p>
+                    </div>
+                    <div class="ref-item">
+                        <strong>Priority Non-Preemptive:</strong>
+                        <p>The available process with the highest priority is selected.</p>
+                    </div>
+                    <div class="ref-item">
+                        <strong>Priority Preemptive:</strong>
+                        <p>The process with the highest priority can interrupt the current process.</p>
+                    </div>
+                </div>
+
+                <div class="formulas-box">
+                    <strong>Standard CPU Scheduling Formulas:</strong>
+                    <ul>
+                        <li><code>Turnaround Time (TAT) = Completion Time (CT) - Arrival Time (AT)</code></li>
+                        <li><code>Waiting Time (WT) = Turnaround Time (TAT) - Burst Time (BT)</code></li>
+                        <li><code>Average Waiting Time = Total WT / Number of Processes</code></li>
+                        <li><code>Average Turnaround Time = Total TAT / Number of Processes</code></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+
+
+        <footer class="footer">
+            <p>Smart CPU Process Scheduler &bull; College Mini Project Simulation</p>
+        </footer>
+
+    </div>
+
+    <script src="scriptt.js"></script>
+</body>
+
+</html>
